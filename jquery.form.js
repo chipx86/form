@@ -308,7 +308,22 @@ $.fn.ajaxSubmit = function(options) {
 
                 if (opts.dataType == 'json' || opts.dataType == 'script') {
                     var ta = doc.getElementsByTagName('textarea')[0];
-                    xhr.responseText = ta ? ta.value : xhr.responseText;
+                    var val;
+
+                    if (ta) {
+                        val = ta.value;
+                    }
+                    else {
+                        var pre = doc.getElementsByTagName('pre')[0];
+
+                        if (pre) {
+                            val = pre.innerHTML;
+                        } else {
+                            val = xhr.responseText;
+                        }
+                    }
+
+                    xhr.responseText = val;
                 }
                 else if (opts.dataType == 'xml' && !xhr.responseXML && xhr.responseText != null) {
                     xhr.responseXML = toXml(xhr.responseText);
